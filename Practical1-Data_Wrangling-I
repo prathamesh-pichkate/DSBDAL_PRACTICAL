@@ -1,0 +1,50 @@
+Step 1: Import Required Python Libraries
+import pandas as pd             
+import numpy as np              
+from sklearn.preprocessing import MinMaxScaler, LabelEncoder 
+
+Step 2: Load Open Source Dataset
+# Load Titanic dataset from local file (download from: https://www.kaggle.com/c/titanic/data)
+df = pd.read_csv("train.csv")   # Reads CSV file into a pandas DataFrame
+
+Step 3: Load Dataset into Pandas DataFrame
+df.head()   # Displays first 5 rows of the dataset
+
+Step 4: Data Preprocessing
+# Check for missing values in each column
+print(df.isnull().sum())
+
+# Get summary statistics for numerical columns
+print(df.describe())
+
+# Get column names, non-null counts, and data types
+df.info()
+
+# Get dimensions of the DataFrame (rows, columns)
+print(df.shape)
+
+Step 5: Data Formatting and Normalization
+# Print data types of each column
+print(df.dtypes)
+
+# Convert 'Sex' and 'Embarked' columns to categorical type
+df['Sex'] = df['Sex'].astype('category')
+df['Embarked'] = df['Embarked'].astype('category')
+
+# Fill missing 'Age' values with the median before normalization
+df['Age'] = df['Age'].fillna(df['Age'].median())
+
+# Normalize 'Age' and 'Fare' using MinMaxScaler (0 to 1 range)
+scaler = MinMaxScaler()
+df[['Fare', 'Age']] = scaler.fit_transform(df[['Fare', 'Age']])
+
+Step 6: Turn Categorical Variables into Quantitative
+# Fill missing values in 'Embarked' column with most common value 'S'
+df['Embarked'] = df['Embarked'].fillna('S')
+
+# Initialize label encoder
+le = LabelEncoder()
+
+# Convert 'Sex' and 'Embarked' categorical values to numeric codes
+df['Sex'] = le.fit_transform(df['Sex'])
+df['Embarked'] = le.fit_transform(df['Embarked'])
